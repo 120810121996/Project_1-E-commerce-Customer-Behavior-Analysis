@@ -1,0 +1,352 @@
+---
+title: "segment 2"
+author: "assignment for Hight Dimensional Data Anlysis"
+date: "2025-02-05"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Meta data
+Dataset Description: E-commerce Customer Behavior
+
+Overview:
+This dataset provides a comprehensive view of customer behavior within an e-commerce platform. Each entry in the dataset corresponds to a unique customer, offering a detailed breakdown of their interactions and transactions. The information is crafted to facilitate a nuanced analysis of customer preferences, engagement patterns, and satisfaction levels, aiding businesses in making data-driven decisions to enhance the customer experience.
+
+Columns:
+ - Customer ID (Type: Numeric):
+    Description: A unique identifier assigned to each customer, ensuring distinction across the dataset.
+
+- Gender: Type: Categorical (Male, Female)
+    Description: Specifies the gender of the customer, allowing for gender-based analytics.
+
+- Age: Type: Numeric
+    Description: Represents the age of the customer, enabling age-group-specific insights.
+
+ - City: Type: Categorical (City names)
+    Description: Indicates the city of residence for each customer, providing geographic insights.
+
+- Membership Type: Type: Categorical (Gold, Silver, Bronze)
+    Description: Identifies the type of membership held by the customer, influencing perks and benefits.
+
+- Total Spend: Type: Numeric
+  Description: Records the total monetary expenditure by the customer on the e-commerce platform.
+
+- Items Purchased: Type: Numeric
+  Description: Quantifies the total number of items purchased by the customer.
+
+- Average Rating: Type: Numeric (0 to 5, with decimals)
+        Description: Represents the average rating given by the customer for purchased items, gauging satisfaction.
+
+- Discount Applied: Type: Boolean (True, False)
+    Description: Indicates whether a discount was applied to the customer's purchase, influencing buying behavior.
+
+- Days Since Last Purchase: Type: Numeric
+    Description: Reflects the number of days elapsed since the customer's most recent purchase, aiding in retention analysis.
+
+- Satisfaction Level: Type: Categorical (Satisfied, Neutral, Unsatisfied)
+    Description: Captures the overall satisfaction level of the customer, providing a subjective measure of their experience.
+    
+
+# LOad necessaries libraries
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(scales)  
+```
+
+    
+# LOad the data set
+
+```{r}
+df = read.csv("E-commerce_Customer_Behavior.csv")
+str(df)
+summary(df)
+```
+
+This data set counts 11 characteristics with 350 custmers. These characteristics are categoricals (Gender,City ,Membership.Type,  Satisfaction.Level ), logique variable ( Discount.Applied) and numericals (Age, Total.spend, Items.purchased,  Average.Rating and Days.Since.Last.Purchase).
+
+Let's transform all catagorical variable as factor.
+
+```{r}
+df$Gender = as.factor(df$Gender)
+df$City = as.factor(df$City)
+df$Membership.Type = as.factor(df$Membership.Type)
+df$Satisfaction.Level = as.factor(df$Satisfaction.Level)
+```
+
+## EXploratory of data
+
+### Univariate
+
+```{r}
+summary(df)
+duplicated(df)
+```
+
+_Gender_
+
+```{r}
+df_counts <- df %>%
+  group_by(Gender) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = count / sum(count) * 100)
+
+#barplot
+ggplot(df_counts, aes(x = Gender, y = count, fill = Gender)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), vjust = -0.5) +
+  labs(title = "Barplot of City", x = "Gender", y = "Observations") +
+  theme_minimal()
+
+```
+We have as many women as men in our dataset.
+
+_City_
+
+```{r}
+
+df_counts <- df %>%
+  group_by(City) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = count / sum(count) * 100)
+
+#barplot
+ggplot(df_counts, aes(x = City, y = count, fill = City)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), vjust = -0.5) +
+  labs(title = "Barplot of City", x = "CIty", y = "Observations") +
+  theme_minimal()
+
+```
+These customers are from 06 city that are Chicago, Houston, LOs angles, Miami, New york and San Francisco. We have more people who are from New york (16.9%) and LOs ANgeles (16.9%) than anothers city.
+
+_Membership.Type_
+```{r}
+df_counts <- df %>%
+  group_by(Membership.Type) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = count / sum(count) * 100)
+
+#barplot
+ggplot(df_counts, aes(x = Membership.Type, y = count, fill = Membership.Type)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), vjust = -0.5) +
+  labs(title = "Barplot of Membership.Type", x = "Membership.Type", y = "Observations") +
+  theme_minimal()
+```
+
+We have 03 types's membership of the customer, and their numbers are almost the same (33.1% for Bronze, 33.4% for Gold and 33.4% for Silver)
+
+
+
+_Satisfaction.Level_
+```{r}
+#summary(df$Satisfaction.Level)
+df_counts <- df %>%
+  group_by(Satisfaction.Level) %>%
+  summarise(count = n()) %>%
+  mutate(percentage = count / sum(count) * 100)
+
+#barplot
+ggplot(df_counts, aes(x = Satisfaction.Level, y = count, fill = Satisfaction.Level)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = paste0(round(percentage, 1), "%")), vjust = -0.5) +
+  labs(title = "Barplot of Satisfaction.Level", x = "Satisfaction.Level", y = "Observations") +
+  theme_minimal()
+```
+We have 03 levels of satisfactions: Neutral, Satisfied and Unsatified. Also, there are some customers who didn't give their satisfaction's level. There are more people who are satified (35.7%)  than the other level (30.6% for Neutral, 33.1% for Unsatified, and 0.6% for those who didn't give their levels.).
+
+
+_Age_
+
+```{r}
+summary(df$Age)
+ggplot(df, aes(x=Age)) + geom_boxplot() + labs(title = "Barplot of Age", x="Age", y="Count")
+```
+THe customer's age vary between 26 and 43 years old. And the clientele is mostly made up of young to middle-aged adults, mainly in the second age bracket (30-40 years).
+
+# TOtal spend
+
+```{r}
+summary(df$Total.Spend)
+ggplot(df, aes(x=Total.Spend)) + geom_boxplot() + labs(title="Barplot of Toatl.Spend", x="TOtal.Spend", y="Count")
+```
+There is a wide dispersion of expenditure between customers. The spend vary between $410,8 and $1 520, AS there is a diffferemce between the mean and the median it means that there are some customers who have the big spend. Also 25% des clients dépensent plus de  1 160,6.
+ 
+ 
+```{r}
+summary(df$Items.Purchased)
+
+ggplot(df, aes(x=Items.Purchased)) + geom_boxplot()+ labs(title = "Boxplot of Items.Purchased", x="Itims.Purchased", y = "Count")
+summary(df)
+```
+ 
+
+
+
+
+
+
+
+
+
+
+### Bivariate
+
+```{r}
+library(corrplot)
+    corr_matrix<-cor(df[, c(3,6,8,10)])
+    corrplot(corr_matrix,method = "circle",type = "upper", tl.col = "black",  addCoef.col = "black")
+```
+We note that there is a strong positive dependency (0.94) between Average.Rating and Total.Spend. This means that one increases with the growth of the other.
+Average.Rating also decreases with increasing age (cor = -0.72). 
+The same applies to depnese, which decreases with increasing age (-0.68).
+The greater the Days.since.Last.Purchase., the lower the expenses ( cor=-0.54).
+
+### Analsis of expenditure
+
+```{r}
+# Moyenne des dépenses par type de membership
+df %>% 
+  group_by(Membership.Type) %>% 
+  summarise(Mean_Spend = mean(Total.Spend), Count = n()) %>% 
+  mutate(Percentage = percent(Count / sum(Count))) %>% 
+  ggplot(aes(x=Membership.Type, y=Mean_Spend, fill=Membership.Type)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=Percentage), vjust=-0.5, color="black", size=5) +
+  scale_fill_manual(values=c("Bronze"="#CD7F32", "Gold"="#FFD700", "Silver"="#C0C0C0")) +
+  ggtitle("Dépenses moyennes par type de membership")
+
+# Depense moyenne par ville
+df %>% 
+  group_by(City) %>% 
+  summarise(Mean_Spend = mean(Total.Spend), Count = n()) %>% 
+  mutate(Percentage = percent(Count / sum(Count))) %>% 
+  ggplot(aes(x=City, y=Mean_Spend, fill=City)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=Percentage), vjust=-0.5, color="black", size=5) +
+  scale_fill_manual(values=c("Chicago"="#CD7F32", "Houston"= "yellow","Los Angeles"= "green", "Miami"="#C0C0C0", "New York"="steelblue", "San Francisco"="#FFD700")) +
+  ggtitle("Dépenses moyennes par ville")
+
+# Boxplot des dépenses en fonction du genre
+ggplot(df, aes(x=Gender, y=Total.Spend, fill=Gender)) + 
+  geom_boxplot() + 
+  scale_fill_manual(values=c("Female"="grey", "Male"="#1E90FF")) +
+  ggtitle("Dépenses totales selon le genre")
+
+
+#spending by age
+df$G_age = ifelse(df$Age<= 30 & df$Age> 26,"[26-30years]", "[31-end]")
+ggplot(df, aes(x=G_age, y=Total.Spend, fill=G_age)) + 
+  geom_boxplot() + 
+  scale_fill_manual(values=c("[26-30years]"="grey", "[31-end]"="#1E90FF")) +
+  ggtitle("Total spend over Age")
+
+```
+
+**Interretation**
+ - In average Gold (more than $1250 ) menbership spend more than silver (almost $750) and Bronze (less than $500). The Gold is our potential clients that spend a lot in our shop.
+ 
+ - Men tend to spend more than women.
+ - San Francisco ($1459,772) is the biggest spender, followed by New York (average $1165,036) and Houston (less than $500).
+ 
+ - The average spending of those aged between 26 and 30 is very different from that of those aged between 31 and 43.
+
+```{r}
+
+# Relation entre la ville et le nombre d'articles achetés
+df %>% 
+  group_by(City) %>% 
+  summarise(Mean_Spend = mean(Items.Purchased), Count = n()) %>% 
+  mutate(Percentage = percent(Count / sum(Count))) %>% 
+  ggplot(aes(x=City, y=Mean_Spend, fill=City)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=Percentage), vjust=-0.5, color="black", size=5) +
+  scale_fill_manual(values=c("Chicago"="#CD7F32", "Houston"= "yellow","Los Angeles"= "green", "Miami"="#C0C0C0", "New York"="steelblue", "San Francisco"="#FFD700")) +
+  ggtitle("Items.Purchased par ville")
+
+# Relation entre la satisfaction et le nombre d'articles achetés
+df %>%
+  group_by(Satisfaction.Level) %>%
+  summarise(Mean_Items = mean(Items.Purchased), Count = n()) %>%
+  mutate(Percentage = percent(Count / sum(Count))) %>%
+  ggplot(aes(x=Satisfaction.Level, y=Mean_Items, fill=Satisfaction.Level)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=Percentage), vjust=-0.5, color="black", size=5) +
+  scale_fill_manual(values=c("Neutral"="#F0E68C", "Satisfied"="#32CD32", "Unsatisfied"="steelblue")) +
+  ggtitle("Nombre d'articles achetés selon la satisfaction")
+
+# Items.Purchased par type de membership
+df %>% 
+  group_by(Membership.Type) %>% 
+  summarise(Mean_Spend = mean(Items.Purchased), Count = n()) %>% 
+  mutate(Percentage = percent(Count / sum(Count))) %>% 
+  ggplot(aes(x=Membership.Type, y=Mean_Spend, fill=Membership.Type)) +
+  geom_bar(stat="identity") +
+  geom_text(aes(label=Percentage), vjust=-0.5, color="black", size=5) +
+  scale_fill_manual(values=c("Bronze"="#CD7F32", "Gold"="#FFD700", "Silver"="#C0C0C0")) +
+  ggtitle("Items.Purchased par type de membership")
+
+
+# Boxplot Items.Purchased en fonction du genre
+ggplot(df, aes(x=Gender, y=Items.Purchased, fill=Gender)) + 
+  geom_boxplot() + 
+  scale_fill_manual(values=c("Female"="grey", "Male"="#1E90FF")) +
+  ggtitle("Items.Purchased selon le genre")
+
+
+#Items.Purchased by age
+#df$G_age = ifelse(df$Age<= 30 & df$Age> 26,"[26-30years]", "[31-end]")
+ggplot(df, aes(x=G_age, y=Items.Purchased, fill=G_age)) + 
+  geom_boxplot() + 
+  scale_fill_manual(values=c("[26-30years]"="grey", "[31-end]"="#1E90FF")) +
+  ggtitle("Items.Purchased over Age")
+```
+
+  
+- Satisfied customers are those who buy the most products on average. There are also some people who buy on average more than 10 item but they aren't satified.
+ 
+ 
+## Forcasting
+ 
+```{r}
+df2 = df[, -c(1,8,9,11,5,12)]
+model = lm(Total.Spend ~ ., data=df2)
+summary(model)
+
+```
+```{r}
+df2 = df2[, -1]
+model2 = lm(Total.Spend ~ ., data=df2)
+summary(model2)
+```
+
+ **Interpretation**:
+- For each additional year of age, total expenditure increases by an average of 1.74 units (e.g. dollars), all else being equal.
+- Customers in San Francisco and New York spend significantly more than those in other cities.
+- For each additional item purchased, total expenditure increases by an average of 25.33 units.
+- For each additional day since the last purchase, total expenditure decreases by an average of 1.28 units.
+
+**Implications for the company**
+
+ _Priority targets:_
+ Customers in San Francisco and New York spend significantly more. The company could focus its marketing efforts on these regions.
+Older customers and those who buy more items are also priority targets.
+
+_Loyalty:_
+ Customers who return more frequently (fewer days since last purchase) spend more. Loyalty programs could encourage more frequent purchases.
+
+_Gender:__
+Gender has no significant impact on spending. Marketing strategies should therefore not be differentiated according to gender.
+
+ 
+ 
+ 
+```{r}
+anova(model, model2)
+```
+
+
