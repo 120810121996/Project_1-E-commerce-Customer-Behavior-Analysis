@@ -4,6 +4,7 @@ This project focuses on analyzing customer behavior within an e-commerce platfor
 
 Dataset Description
 The dataset, E-commerce Customer Behavior, contains 350 observations (customers) and 11 variables. Each row represents a unique customer, and the columns provide detailed information about their demographics, purchasing behavior, and satisfaction levels.
+
 Variables:
     1. Customer ID: Unique identifier for each customer.
     2. Gender: Categorical variable (Male, Female).
@@ -11,11 +12,7 @@ Variables:
     4. City: Categorical variable indicating the customer's city of residence (Chicago, Houston, Los Angeles, Miami, New York, San Francisco).
     5. Membership Type: Categorical variable (Gold, Silver, Bronze) indicating the customer's membership level.
     6. Total Spend: Numeric variable representing the total monetary expenditure by the customer.
-    7. Items Purchased: Numeric variable indicating the total number of items purchased.
-    8. Average Rating: Numeric variable (0 to 5) representing the average rating given by the customer.
-    9. Discount Applied: Boolean variable (True, False) indicating whether a discount was applied.
-    10. Days Since Last Purchase: Numeric variable indicating the number of days since the customer's last purchase.
-    11. Satisfaction Level: Categorical variable (Satisfied, Neutral, Unsatisfied) capturing the customer's overall satisfaction.
+    7. Items Purchased,Average Rating, Discount Applied, Days Since Last Purchase,Satisfaction Level.
 
 Project Structure
 The project is divided into the following sections:
