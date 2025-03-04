@@ -1,6 +1,6 @@
 ---
-title: "segment 2"
-author: "assignment for Hight Dimensional Data Anlysis"
+title: "e_COMMERCE"
+author: "KANNE TAMIBE KOCHIAKE"
 date: "2025-02-05"
 output: html_document
 ---
