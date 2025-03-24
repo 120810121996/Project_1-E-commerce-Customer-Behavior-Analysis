@@ -17,9 +17,12 @@ Variables:
 Project Structure
 The project is divided into the following sections:
 1. Data Loading and Preprocessing
+   
     • The dataset is loaded and categorical variables (Gender, City, Membership Type, Satisfaction Level) are converted into factors for analysis.
     • Basic exploratory data analysis (EDA) is performed to understand the structure and distribution of the data.
-2. Univariate Analysis
+   
+3. Univariate Analysis
+   
     • Gender: The dataset is balanced, with an equal number of male and female customers.
     • City: Customers are distributed across six cities, with New York and Los Angeles having the highest representation (16.9% each).
     • Membership Type: The distribution of membership types is almost equal (33.1% Bronze, 33.4% Gold, 33.4% Silver).
@@ -27,21 +30,26 @@ The project is divided into the following sections:
     • Age: Customers are predominantly young to middle-aged adults, with ages ranging from 26 to 43 years.
     • Total Spend: There is a wide range of spending, with some customers spending significantly more than others.
     • Items Purchased: The number of items purchased varies, with satisfied customers purchasing more items on average.
-3. Bivariate Analysis
+   
+5. Bivariate Analysis
+   
 - A correlation matrix is used to explore relationships between numerical variables:
         ◦ Total Spend and Average Rating have a strong positive correlation (0.94).
         ◦ Age is negatively correlated with Average Rating (-0.72) and Total Spend (-0.68).
         ◦ Days Since Last Purchase is negatively correlated with Total Spend (-0.54).
+  
   - In average Gold (more than $1250 ) menbership spend more than silver (almost $750) and Bronze (less than $500). The Gold is our potential clients that spend a lot in our shop.
  - Men tend to spend more than women.
  - San Francisco ($1459,772) is the biggest spender, followed by New York (average $1165,036) and Houston (less than $500).
  - The average spending of those aged between 26 and 30 is very different from that of those aged between 31 and 43.
+   
 4. Expenditure Analysis
     • Membership Type: Gold members spend significantly more (1250onaverage)comparedtoSilver(750) and Bronze ($500) members.
     • City: Customers from San Francisco spend the most (1459.77onaverage),followedbyNewYork(1165.04). Houston has the lowest average spending.
     • Gender: Men tend to spend slightly more than women.
     • Age: Customers aged 26-30 spend more on average than those aged 31-43.
-5. Forecasting with Linear Regression
+   
+6. Forecasting with Linear Regression
     • A linear regression model is built to predict Total Spend based on customer attributes.
     • Key findings:
         ◦ Age: Each additional year of age increases total spending by 1.74 units.
